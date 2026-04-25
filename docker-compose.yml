@@ -1,0 +1,18 @@
+services:
+  fetcher:
+    build: .
+    image: osm-gps-fetcher:latest
+    container_name: osm-gps-fetcher
+    volumes:
+      - ./data:/data
+    environment:
+      TARGET_COUNT: 10000
+      DELAY: 2.0
+      LIMIT: 0
+      WATCH: "1"
+      WATCH_INTERVAL: 900           # 15 min between RSS fetches
+      RATE_LIMIT_COOLDOWN: 3600     # 1h pause on HTTP 429/503
+    restart: unless-stopped
+    # override args at runtime, e.g.:
+    #   docker compose run --rm fetcher --limit 5 --delay 2
+    command: ["--out", "/data"]
