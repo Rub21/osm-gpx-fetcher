@@ -1,3 +1,4 @@
 data/
 .env
 gpx_files/
+upload_status.csv

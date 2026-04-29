@@ -108,3 +108,32 @@ export OSM_URL=https://openstreetmap.204-168-242-139.nip.io
 export GPX_DIR=data/gpx
 ./upload_gpx.sh
 ```
+
+### Status tracking and retries
+
+`upload_gpx.sh` writes the result of every upload to `upload_status.csv`:
+
+```
+OK,12317108,200,9
+FAIL,12317114,413,
+```
+
+On the next run it skips files that are already in the log (both `OK` and
+`FAIL`), so re-running is safe and only processes new files.
+
+To retry the failed ones, delete the `FAIL` rows and run again:
+
+```bash
+sed -i.bak '/^FAIL,/d' upload_status.csv
+./upload_gpx.sh
+```
+
+Inspect failures:
+
+```bash
+grep ^FAIL, upload_status.csv
+```
+
+Note: `413` errors mean the GPX file is bigger than the server's upload
+limit and won't succeed until `client_max_body_size` is raised on the
+nginx in front of openstreetmap-website.
