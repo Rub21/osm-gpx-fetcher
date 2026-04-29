@@ -68,8 +68,6 @@ don't want Docker. Loops forever picking up new traces.
 
 - The RSS feed only returns the ~20 most recent traces. To collect many,
   let it run for hours/days.
-- For bulk historical data, use the planet GPX dump instead:
-  https://planet.openstreetmap.org/gps/
 
 ---
 
@@ -95,9 +93,7 @@ Save the **Client ID** and **Client Secret** into `.env`.
 
 Where to register:
 
-- Test instance: https://openstreetmap.204-168-242-139.nip.io/oauth2/applications
 - Local dev: http://localhost:3000/oauth2/applications
-- Production: https://www.openstreetmap.org/oauth2/applications
 
 ### 2. Generate an access token
 
