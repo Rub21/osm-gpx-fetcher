@@ -1,5 +1,22 @@
 import os
+from pathlib import Path
 from requests_oauthlib import OAuth2Session
+
+
+def load_env(path=".env"):
+    p = Path(path)
+    if not p.exists():
+        return
+    for line in p.read_text().splitlines():
+        line = line.strip()
+        if not line or line.startswith("#") or "=" not in line:
+            continue
+        k, v = line.split("=", 1)
+        k, v = k.strip(), v.strip().strip('"').strip("'")
+        os.environ.setdefault(k, v)
+
+
+load_env()
 
 OSM_URL = os.environ.get("OSM_URL", "https://openstreetmap.204-168-242-139.nip.io")
 

@@ -19,15 +19,18 @@ fetch_one() {
     [ -f "$f" ] && return 0
 
     code=$(curl -s -L -A "osmf-gps-research" \
+        --connect-timeout 10 --max-time 30 \
         -o "$f" -w "%{http_code}" \
         "https://www.openstreetmap.org/traces/$id/data")
 
     case "$code" in
         200)
+            size=$(wc -c <"$f" | tr -d ' ')
+            echo "ok $id  ($size bytes)"
             sleep "$SLEEP_OK"
             ;;
         404|403)
-            # traza privada o no existe
+            # traza privada o no existe, saltar
             rm -f "$f"
             ;;
         429|503)
